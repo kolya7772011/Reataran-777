@@ -42,13 +42,13 @@ INSTALLED_APPS = [
     'drf_yasg',
 
     # local apps (1-a'zodan 6-a'zogacha bo'lgan modullar)
-    'apps.accounts',   # 1-a'zo: Auth & Foydalanuvchilar
+    "apps.accounts",   # 1-a'zo: Auth & Foydalanuvchilar
     'apps.menu',       # 2-a'zo: Kategoriyalar & Menu
-    # 'apps.news',       # 3-a'zo: Yangiliklar / Postlar
-    # 'apps.orders',     # 4-a'zo: Buyurtmalar & Statistika
-    # 'apps.contact',    # 5-a'zo: Xabarlar, Kontakt & Mijozlar
+    'apps.news',       # 3-a'zo: Yangiliklar / Postlar
+    'apps.orders',     # 4-a'zo: Buyurtmalar & Statistika
+    'apps.contact',    # 5-a'zo: Xabarlar, Kontakt & Mijozlar
     'apps.core', 
-          # 6-a'zo: Umumiy Infratuzilma & Fayl yuklash
+        #   6-a'zo: Umumiy Infratuzilma & Fayl yuklash
 ]
 
 MIDDLEWARE = [
