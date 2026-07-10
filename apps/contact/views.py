@@ -1,6 +1,6 @@
 from django.utils.decorators import method_decorator
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -100,3 +100,27 @@ class TestimonialListView(generics.ListAPIView):
     serializer_class = TestimonialSerializer
     permission_classes = [AllowAny]
     pagination_class = None
+
+
+class AdminTestimonialCreateView(generics.CreateAPIView):
+    queryset = Testimonial.objects.all()
+    serializer_class = TestimonialSerializer
+    permission_classes = [IsAdminRole]
+
+
+class AdminTestimonialUpdateView(generics.UpdateAPIView):
+    queryset = Testimonial.objects.all()
+    serializer_class = TestimonialSerializer
+    permission_classes = [IsAdminRole]
+
+
+class AdminTestimonialDeleteView(generics.DestroyAPIView):
+    queryset = Testimonial.objects.all()
+    serializer_class = TestimonialSerializer
+    permission_classes = [IsAdminRole]
+
+
+class AdminNewsletterSubscriberListView(generics.ListAPIView):
+    queryset = NewsletterSubscriber.objects.all()
+    serializer_class = NewsletterSubscribeSerializer
+    permission_classes = [IsAdminRole]

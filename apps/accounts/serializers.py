@@ -41,6 +41,14 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = fields
 
 
+class UserUpdateSerializer(serializers.ModelSerializer):
+    """Profil tahrirlash uchun serializer — faqat ruxsat etilgan maydonlar."""
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'phone')
+
+
 class EaturkishTokenObtainPairSerializer(TokenObtainPairSerializer):
     """
     Oddiy login uchun token serializer — javobga foydalanuvchi

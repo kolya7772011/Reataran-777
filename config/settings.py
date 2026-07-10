@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
     'drf_yasg',
+    'drf_spectacular',
 
     # local apps (1-a'zodan 6-a'zogacha bo'lgan modullar)
     "apps.accounts",   # 1-a'zo: Auth & Foydalanuvchilar
@@ -135,12 +136,21 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
     'DATETIME_FORMAT': '%Y-%m-%d %H:%M:%S',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'EATURKISH API',
+    'DESCRIPTION': 'EATURKISH restoran platformasi uchun REST API',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }
 
 # ------------------------------------------------------------------

@@ -1,9 +1,10 @@
 from django.db.models import Count, DecimalField, Sum, Value
 from django.db.models.functions import Coalesce, TruncDate
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.shortcuts import get_object_or_404
 
 from apps.accounts.permissions import IsAdminRole
 from .models import Order, OrderItem
@@ -111,3 +112,25 @@ class AdminSalesChannelStatsView(APIView):
             'online': {'count': online_count, 'percent': percent(online_count)},
             'offline': {'count': offline_count, 'percent': percent(offline_count)},
         })
+
+
+class AdminOrderDetailView(generics.RetrieveAPIView):
+    queryset = Order.objects.all().prefetch_related('items', 'items__product')
+    serializer_class = OrderSerializer
+    permission_classes = [IsAdminRole]
+
+
+class AdminOrderStatusUpdateView(APIView):
+    permission_classes = [IsAdminRole]
+
+    def patch(self, request, pk):
+        order = get_object_or_404(Order, pk=pk)
+        new_status = request.data.get('status')
+        if new_status not in dict(Order.Status.choices):
+            return Response(
+                {'detail': 'Noto\'g\'ri status. Tanlov: ' + ', '.join(dict(Order.Status.choices).keys())},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        order.status = new_status
+        order.save(update_fields=['status'])
+        return Response(OrderSerializer(order).data)

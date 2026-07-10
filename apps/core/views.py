@@ -3,9 +3,11 @@ import uuid
 from django.core.files.storage import default_storage
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from apps.accounts.permissions import IsAdminRole
 from .models import GalleryImage, RestaurantInfo
 from .serializers import (
     GalleryImageSerializer,
@@ -64,3 +66,22 @@ class RestaurantInfoView(APIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
         return Response(RestaurantInfoSerializer(info).data)
+
+
+class AdminGalleryCreateView(generics.CreateAPIView):
+    queryset = GalleryImage.objects.all()
+    serializer_class = GalleryImageSerializer
+    permission_classes = [IsAdminRole]
+    parser_classes = [MultiPartParser, FormParser]
+
+
+class AdminGalleryDeleteView(generics.DestroyAPIView):
+    queryset = GalleryImage.objects.all()
+    serializer_class = GalleryImageSerializer
+    permission_classes = [IsAdminRole]
+
+
+class AdminRestaurantInfoUpdateView(generics.UpdateAPIView):
+    queryset = RestaurantInfo.objects.all()
+    serializer_class = RestaurantInfoSerializer
+    permission_classes = [IsAdminRole]
