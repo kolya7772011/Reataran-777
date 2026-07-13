@@ -1,9 +1,10 @@
 from django.db.models import Count, DecimalField, Sum, Value
 from django.db.models.functions import Coalesce, TruncDate
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.shortcuts import get_object_or_404
 
 from apps.accounts.permissions import IsAdminRole
 from .models import Order, OrderItem
@@ -111,8 +112,11 @@ class AdminSalesChannelStatsView(APIView):
             'online': {'count': online_count, 'percent': percent(online_count)},
             'offline': {'count': offline_count, 'percent': percent(offline_count)},
         })
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Master
 
 
 class AdminOrderDetailView(generics.RetrieveAPIView):
@@ -135,6 +139,7 @@ class AdminOrderStatusUpdateView(APIView):
         order.status = new_status
         order.save(update_fields=['status'])
         return Response(OrderSerializer(order).data)
+<<<<<<< HEAD
 
 
 class AdminDashboardStatsView(APIView):
@@ -168,3 +173,5 @@ class AdminDashboardStatsView(APIView):
             'avg_rating': avg_rating,
         })
 >>>>>>> Stashed changes
+=======
+>>>>>>> Master

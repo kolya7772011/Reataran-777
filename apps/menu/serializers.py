@@ -1,24 +1,80 @@
 from rest_framework import serializers
-from .models import Category, Product
 
+from .models import Category, Product, ProductComment, ProductLike, ProductRating
+
+
+# ---------- Category ----------
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = ('id', 'name', 'order')
 
+
+# ---------- Product ----------
 
 class ProductSerializer(serializers.ModelSerializer):
+    """
+    Mahsulotni to'liq ko'rsatish uchun (list, detail, admin create/update).
+    Frontendda ko'rsatiladigan qo'shimcha statistikalar
+    (yulduzcha, like/dislike, izohlar soni) ham shu yerda hisoblab beriladi.
+    """
+
     category_name = serializers.CharField(source='category.name', read_only=True)
+    average_rating = serializers.SerializerMethodField()
+    ratings_count = serializers.SerializerMethodField()
+    likes_count = serializers.SerializerMethodField()
+    dislikes_count = serializers.SerializerMethodField()
+    comments_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = (
+            'id',
+            'category',
+            'category_name',
+            'name',
+            'description',
+            'price',
+            'image',
+            'is_active',
+            'is_popular',
+            'created_at',
+            'average_rating',
+            'ratings_count',
+            'likes_count',
+            'dislikes_count',
+            'comments_count',
+        )
+
+    def get_average_rating(self, obj):
+        ratings = obj.ratings.all()
+        if not ratings:
+            return None
+        return round(sum(r.score for r in ratings) / ratings.count(), 1)
+
+    def get_ratings_count(self, obj):
+        return obj.ratings.count()
+
+    def get_likes_count(self, obj):
+        return obj.likes.filter(is_like=True).count()
+
+    def get_dislikes_count(self, obj):
+        return obj.likes.filter(is_like=False).count()
+
+    def get_comments_count(self, obj):
+        return obj.comments.count()
 
 
 class ProductToggleSerializer(serializers.ModelSerializer):
+    """
+    Admin mahsulotni faol/nofaol qilish uchun — faqat is_active maydoni
+    bilan ishlaydi (AdminProductToggleView shu orqali PATCH qabul qiladi).
+    """
+
     class Meta:
         model = Product
+<<<<<<< HEAD
 <<<<<<< Updated upstream
         fields = ['is_active']
 =======
@@ -37,6 +93,11 @@ class AdminProductSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'created_at')
 
 
+=======
+        fields = ('is_active',)
+
+
+>>>>>>> Master
 # ---------- Comment ----------
 
 class ProductCommentCreateSerializer(serializers.ModelSerializer):
@@ -81,5 +142,9 @@ class ProductRatingSerializer(serializers.ModelSerializer):
     def validate_score(self, value):
         if not (1 <= value <= 5):
             raise serializers.ValidationError("Baho 1 dan 5 gacha bo'lishi kerak.")
+<<<<<<< HEAD
         return value
 >>>>>>> Stashed changes
+=======
+        return value
+>>>>>>> Master

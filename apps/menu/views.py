@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 from rest_framework import generics, permissions
 =======
@@ -6,13 +7,22 @@ from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions, status
 from rest_framework.parsers import FormParser, MultiPartParser
 >>>>>>> Stashed changes
+=======
+from django.http import Http404
+from django.shortcuts import get_object_or_404
+from rest_framework import generics, permissions, status
+>>>>>>> Master
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
 from apps.accounts.permissions import IsAdminRole
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 from .models import Category, Product
 from .serializers import CategorySerializer, ProductSerializer, ProductToggleSerializer
 =======
+=======
+>>>>>>> Master
 
 from .models import (
     Category,
@@ -22,7 +32,10 @@ from .models import (
     ProductRating,
 )
 from .serializers import (
+<<<<<<< HEAD
     AdminProductSerializer,
+=======
+>>>>>>> Master
     CategorySerializer,
     ProductCommentCreateSerializer,
     ProductCommentSerializer,
@@ -32,7 +45,10 @@ from .serializers import (
     ProductToggleSerializer,
 )
 
+<<<<<<< HEAD
 >>>>>>> Stashed changes
+=======
+>>>>>>> Master
 
 
 # ---------- Public ----------
@@ -126,9 +142,12 @@ class AdminProductDeleteView(generics.DestroyAPIView):
 class AdminProductToggleView(generics.UpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductToggleSerializer
+<<<<<<< HEAD
 <<<<<<< Updated upstream
     permission_classes = [IsAdminRole]
 =======
+=======
+>>>>>>> Master
     permission_classes = [IsAdminRole]
 
 
@@ -175,7 +194,10 @@ class ProductLikeToggleView(APIView):
 class ProductCommentListCreateView(generics.ListCreateAPIView):
     serializer_class = ProductCommentCreateSerializer
     permission_classes = [permissions.AllowAny]
+<<<<<<< HEAD
     pagination_class = None
+=======
+>>>>>>> Master
 
     def get_queryset(self):
         return ProductComment.objects.filter(product_id=self.kwargs['pk'])
@@ -216,5 +238,9 @@ class ProductRatingDetailView(generics.RetrieveAPIView):
         rating = ProductRating.objects.filter(product=product).first()
         if not rating:
             raise Http404("Rating topilmadi.")
+<<<<<<< HEAD
         return rating
 >>>>>>> Stashed changes
+=======
+        return rating
+>>>>>>> Master

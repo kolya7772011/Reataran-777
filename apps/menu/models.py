@@ -1,5 +1,6 @@
 from django.db import models
-
+from django.db.models import *
+from django.conf import settings
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
@@ -28,3 +29,41 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+class ProductComment(models.Model):
+    product = ForeignKey(Product, CASCADE, related_name='comments')
+    text = TextField()
+    created_at = DateTimeField(auto_now_add=True)
+
+class ProductLike(models.Model):
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name="likes"
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="product_likes"
+    )
+    is_like = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("product", "user")
+
+
+class ProductRating(models.Model):
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name="ratings"
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    score = models.PositiveSmallIntegerField()
+
+    class Meta:
+        unique_together = ("product", "user")
