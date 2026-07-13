@@ -111,3 +111,60 @@ class AdminSalesChannelStatsView(APIView):
             'online': {'count': online_count, 'percent': percent(online_count)},
             'offline': {'count': offline_count, 'percent': percent(offline_count)},
         })
+<<<<<<< Updated upstream
+=======
+
+
+class AdminOrderDetailView(generics.RetrieveAPIView):
+    queryset = Order.objects.all().prefetch_related('items', 'items__product')
+    serializer_class = OrderSerializer
+    permission_classes = [IsAdminRole]
+
+
+class AdminOrderStatusUpdateView(APIView):
+    permission_classes = [IsAdminRole]
+
+    def patch(self, request, pk):
+        order = get_object_or_404(Order, pk=pk)
+        new_status = request.data.get('status')
+        if new_status not in dict(Order.Status.choices):
+            return Response(
+                {'detail': 'Noto\'g\'ri status. Tanlov: ' + ', '.join(dict(Order.Status.choices).keys())},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        order.status = new_status
+        order.save(update_fields=['status'])
+        return Response(OrderSerializer(order).data)
+
+
+class AdminDashboardStatsView(APIView):
+    """GET /admin/stats/dashboard — Dashboard umumiy statistikasi."""
+
+    permission_classes = [IsAdminRole]
+
+    def get(self, request):
+        from apps.menu.models import ProductRating
+
+        active_orders = Order.objects.exclude(status=Order.Status.CANCELLED)
+
+        total_revenue = active_orders.aggregate(
+            total=Coalesce(Sum('total_amount'), Value(0), output_field=DecimalField())
+        )['total']
+
+        total_orders = active_orders.count()
+
+        total_customers = active_orders.values('customer_phone').distinct().count()
+
+        ratings = ProductRating.objects.all()
+        if ratings.exists():
+            avg_rating = round(sum(r.score for r in ratings) / ratings.count(), 1)
+        else:
+            avg_rating = 0
+
+        return Response({
+            'total_revenue': total_revenue,
+            'total_orders': total_orders,
+            'total_customers': total_customers,
+            'avg_rating': avg_rating,
+        })
+>>>>>>> Stashed changes

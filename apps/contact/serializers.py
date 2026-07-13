@@ -8,7 +8,7 @@ class MessageCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Message
-        fields = ('id', 'name', 'email', 'phone', 'text', 'created_at')
+        fields = ('id', 'name', 'email', 'phone', 'subject', 'text', 'created_at')
         read_only_fields = ('id', 'created_at')
 
 
@@ -17,7 +17,7 @@ class MessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Message
-        fields = ('id', 'name', 'email', 'phone', 'text', 'is_read', 'created_at')
+        fields = ('id', 'name', 'email', 'phone', 'subject', 'text', 'is_read', 'created_at')
         read_only_fields = fields
 
 
