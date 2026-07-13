@@ -1,29 +1,21 @@
-# Python
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-
-# Virtual env
-venv/
-env/
-.venv/
-
-# Django
-*.log
-local_settings.py
+*.pyc
+*.pyo
+.env
 db.sqlite3
 db.sqlite3-journal
+*.egg-info/
+dist/
+build/
+venv/
+.venv/
 media/
 staticfiles/
-
-# Environment variables
-.env
-
-# IDE
+*.log
+.DS_Store
+Thumbs.db
 .vscode/
 .idea/
-
-# OS
-.DS_Store
+*.swp
+*.swo
+*~

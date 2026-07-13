@@ -8,7 +8,7 @@ class PostListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('id', 'title', 'image', 'created_at')
+        fields = ('id', 'title', 'desc', 'category', 'image', 'created_at')
 
 
 class PostDetailSerializer(serializers.ModelSerializer):
@@ -16,7 +16,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('id', 'title', 'content', 'image', 'created_at', 'updated_at')
+        fields = ('id', 'title', 'desc', 'category', 'content', 'image', 'created_at', 'updated_at')
 
 
 class PostAdminSerializer(serializers.ModelSerializer):
@@ -24,5 +24,5 @@ class PostAdminSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('id', 'title', 'content', 'image', 'created_at', 'updated_at')
+        fields = ('id', 'title', 'desc', 'category', 'content', 'image', 'created_at', 'updated_at')
         read_only_fields = ('id', 'created_at', 'updated_at')

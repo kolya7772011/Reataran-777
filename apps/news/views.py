@@ -64,7 +64,11 @@ class AdminPostCreateView(generics.CreateAPIView):
 
 @method_decorator(
     name='put',
-    decorator=swagger_auto_schema(tags=TAG, operation_summary="Postni tahrirlash (Admin)"),
+    decorator=swagger_auto_schema(tags=TAG, operation_summary="Postni to'liq tahrirlash (Admin)"),
+)
+@method_decorator(
+    name='patch',
+    decorator=swagger_auto_schema(tags=TAG, operation_summary="Postni qisman tahrirlash (Admin)"),
 )
 @method_decorator(
     name='delete',
@@ -75,7 +79,8 @@ class AdminPostDetailView(
 ):
     """
     /api/admin/posts/{id}
-    PUT    — Postni tahrirlash
+    PUT    — Postni to'liq tahrirlash
+    PATCH  — Postni qisman tahrirlash
     DELETE — Postni o'chirish
     """
 
@@ -86,6 +91,9 @@ class AdminPostDetailView(
 
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)

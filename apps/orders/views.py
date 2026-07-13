@@ -112,6 +112,11 @@ class AdminSalesChannelStatsView(APIView):
             'online': {'count': online_count, 'percent': percent(online_count)},
             'offline': {'count': offline_count, 'percent': percent(offline_count)},
         })
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+=======
+=======
+>>>>>>> Master
 
 
 class AdminOrderDetailView(generics.RetrieveAPIView):
@@ -134,3 +139,39 @@ class AdminOrderStatusUpdateView(APIView):
         order.status = new_status
         order.save(update_fields=['status'])
         return Response(OrderSerializer(order).data)
+<<<<<<< HEAD
+
+
+class AdminDashboardStatsView(APIView):
+    """GET /admin/stats/dashboard — Dashboard umumiy statistikasi."""
+
+    permission_classes = [IsAdminRole]
+
+    def get(self, request):
+        from apps.menu.models import ProductRating
+
+        active_orders = Order.objects.exclude(status=Order.Status.CANCELLED)
+
+        total_revenue = active_orders.aggregate(
+            total=Coalesce(Sum('total_amount'), Value(0), output_field=DecimalField())
+        )['total']
+
+        total_orders = active_orders.count()
+
+        total_customers = active_orders.values('customer_phone').distinct().count()
+
+        ratings = ProductRating.objects.all()
+        if ratings.exists():
+            avg_rating = round(sum(r.score for r in ratings) / ratings.count(), 1)
+        else:
+            avg_rating = 0
+
+        return Response({
+            'total_revenue': total_revenue,
+            'total_orders': total_orders,
+            'total_customers': total_customers,
+            'avg_rating': avg_rating,
+        })
+>>>>>>> Stashed changes
+=======
+>>>>>>> Master

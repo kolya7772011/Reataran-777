@@ -1,10 +1,28 @@
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+from rest_framework import generics, permissions
+=======
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions, status
+from rest_framework.parsers import FormParser, MultiPartParser
+>>>>>>> Stashed changes
+=======
+from django.http import Http404
+from django.shortcuts import get_object_or_404
+from rest_framework import generics, permissions, status
+>>>>>>> Master
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.accounts.permissions import IsAdminRole
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+from .models import Category, Product
+from .serializers import CategorySerializer, ProductSerializer, ProductToggleSerializer
+=======
+=======
+>>>>>>> Master
 
 from .models import (
     Category,
@@ -14,6 +32,10 @@ from .models import (
     ProductRating,
 )
 from .serializers import (
+<<<<<<< HEAD
+    AdminProductSerializer,
+=======
+>>>>>>> Master
     CategorySerializer,
     ProductCommentCreateSerializer,
     ProductCommentSerializer,
@@ -23,6 +45,10 @@ from .serializers import (
     ProductToggleSerializer,
 )
 
+<<<<<<< HEAD
+>>>>>>> Stashed changes
+=======
+>>>>>>> Master
 
 
 # ---------- Public ----------
@@ -31,6 +57,7 @@ class CategoryListView(generics.ListAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [permissions.AllowAny]
+    pagination_class = None
 
 
 class ProductListView(generics.ListAPIView):
@@ -49,6 +76,7 @@ class PopularProductListView(generics.ListAPIView):
     queryset = Product.objects.filter(is_active=True, is_popular=True)
     serializer_class = ProductSerializer
     permission_classes = [permissions.AllowAny]
+    pagination_class = None
 
 
 class ProductDetailView(generics.RetrieveAPIView):
@@ -79,16 +107,30 @@ class AdminCategoryDeleteView(generics.DestroyAPIView):
 
 # ---------- Admin: Product ----------
 
-class AdminProductCreateView(generics.CreateAPIView):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
+class AdminProductListView(generics.ListCreateAPIView):
+    """GET/POST /admin/products — Mahsulotlar ro'yxati + yangi mahsulot qo'shish (admin)."""
+
     permission_classes = [IsAdminRole]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return AdminProductSerializer
+        return ProductSerializer
+
+    def get_queryset(self):
+        qs = Product.objects.all()
+        category_id = self.request.query_params.get('category_id')
+        if category_id:
+            qs = qs.filter(category_id=category_id)
+        return qs
 
 
 class AdminProductUpdateView(generics.UpdateAPIView):
     queryset = Product.objects.all()
-    serializer_class = ProductSerializer
+    serializer_class = AdminProductSerializer
     permission_classes = [IsAdminRole]
+    parser_classes = [MultiPartParser, FormParser]
 
 
 class AdminProductDeleteView(generics.DestroyAPIView):
@@ -100,6 +142,12 @@ class AdminProductDeleteView(generics.DestroyAPIView):
 class AdminProductToggleView(generics.UpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductToggleSerializer
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+    permission_classes = [IsAdminRole]
+=======
+=======
+>>>>>>> Master
     permission_classes = [IsAdminRole]
 
 
@@ -146,6 +194,10 @@ class ProductLikeToggleView(APIView):
 class ProductCommentListCreateView(generics.ListCreateAPIView):
     serializer_class = ProductCommentCreateSerializer
     permission_classes = [permissions.AllowAny]
+<<<<<<< HEAD
+    pagination_class = None
+=======
+>>>>>>> Master
 
     def get_queryset(self):
         return ProductComment.objects.filter(product_id=self.kwargs['pk'])
@@ -186,4 +238,9 @@ class ProductRatingDetailView(generics.RetrieveAPIView):
         rating = ProductRating.objects.filter(product=product).first()
         if not rating:
             raise Http404("Rating topilmadi.")
+<<<<<<< HEAD
         return rating
+>>>>>>> Stashed changes
+=======
+        return rating
+>>>>>>> Master
