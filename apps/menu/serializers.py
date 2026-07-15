@@ -74,10 +74,6 @@ class ProductToggleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-        fields = ['is_active']
-=======
         fields = ('is_active',)
 
 
@@ -93,11 +89,6 @@ class AdminProductSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'created_at')
 
 
-=======
-        fields = ('is_active',)
-
-
->>>>>>> Master
 # ---------- Comment ----------
 
 class ProductCommentCreateSerializer(serializers.ModelSerializer):
@@ -142,9 +133,4 @@ class ProductRatingSerializer(serializers.ModelSerializer):
     def validate_score(self, value):
         if not (1 <= value <= 5):
             raise serializers.ValidationError("Baho 1 dan 5 gacha bo'lishi kerak.")
-<<<<<<< HEAD
         return value
->>>>>>> Stashed changes
-=======
-        return value
->>>>>>> Master

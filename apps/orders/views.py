@@ -112,11 +112,6 @@ class AdminSalesChannelStatsView(APIView):
             'online': {'count': online_count, 'percent': percent(online_count)},
             'offline': {'count': offline_count, 'percent': percent(offline_count)},
         })
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Master
 
 
 class AdminOrderDetailView(generics.RetrieveAPIView):
@@ -139,7 +134,6 @@ class AdminOrderStatusUpdateView(APIView):
         order.status = new_status
         order.save(update_fields=['status'])
         return Response(OrderSerializer(order).data)
-<<<<<<< HEAD
 
 
 class AdminDashboardStatsView(APIView):
@@ -172,6 +166,3 @@ class AdminDashboardStatsView(APIView):
             'total_customers': total_customers,
             'avg_rating': avg_rating,
         })
->>>>>>> Stashed changes
-=======
->>>>>>> Master
