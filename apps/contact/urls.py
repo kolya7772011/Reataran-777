@@ -11,7 +11,7 @@ from .views import (
     ContactMessageCreateView,
     NewsletterSubscribeView,
     TestimonialListView,
-)\
+)
 
 urlpatterns = [
     path('contact', ContactMessageCreateView.as_view(), name='contact-create'),
