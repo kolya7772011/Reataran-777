@@ -1,0 +1,18 @@
+entrypoint = "manage.py"
+
+[nix]
+channel = "stable-24_05"
+
+[run]
+command = ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]
+
+[deployment]
+run = ["sh", "-c", "pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:$PORT"]
+
+[[ports]]
+localPort = 8000
+externalPort = 80
+
+[packager]
+language = "python3"
+ignoredPaths = [".git", "venv", "__pycache__"]
